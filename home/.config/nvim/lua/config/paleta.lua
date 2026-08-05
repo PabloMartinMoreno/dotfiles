@@ -12,13 +12,15 @@ return {
   rosa = "#f265b5",
   verde = "#37f499",
   cyan = "#04d1f9",
+  cyan_brillante = "#39DDFD",
   violeta = "#a48cf2",
   amarillo = "#f1fc79",
   rojo = "#f16c75",
   naranja = "#f7c67f",
 
-  -- Orden de los seis niveles de heading.
-  headings = { "#f265b5", "#37f499", "#04d1f9", "#a48cf2", "#f1fc79", "#f16c75" },
+  -- Orden de los seis niveles de heading. H2 y H3 van cambiados respecto de la
+  -- paleta original: el cyan pesa menos que el verde y ordena mejor la jerarquía.
+  headings = { "#f265b5", "#04d1f9", "#37f499", "#a48cf2", "#f1fc79", "#f16c75" },
   -- Texto sobre la barra del heading. Oscuro, para que el color sea el que grita.
   heading_texto = "#171928",
 }

@@ -39,6 +39,10 @@ local function aplicar()
 
   -- Frontmatter apagado: es metadata, no contenido.
   vim.api.nvim_set_hl(0, "@property.yaml", { fg = p.comentario })
+
+  -- Número de la línea del cursor. eldritch lo pone verde, que se confunde con
+  -- el verde de los H3.
+  vim.api.nvim_set_hl(0, "CursorLineNr", { fg = p.cyan_brillante, bold = true })
 end
 
 aplicar()
