@@ -1,6 +1,7 @@
 #!/bin/sh
-# Abre el vault en kitty, no en el terminal por defecto: kitty resuelve los
-# glifos de Nerd Font arriba de U+FFFF que usan los íconos de heading.
+# Abre el vault en nvim.
+# Desde una terminal: en la misma ventana. Desde dmenu o un atajo del WM, donde
+# no hay terminal en la que escribir, abre una ventana de kitty.
 # La ruta sale de OBSIDIAN_VAULT; exportala en tu perfil de shell.
 DIR="${OBSIDIAN_VAULT:-$HOME/vault}"
 
@@ -9,6 +10,10 @@ DIR="${OBSIDIAN_VAULT:-$HOME/vault}"
 	exit 1
 }
 
-exec kitty --directory "$DIR" \
-	--title "$(basename "$DIR")" \
-	-e nvim Inicio.md
+cd "$DIR" || exit 1
+
+if [ -t 1 ]; then
+	exec nvim Inicio.md
+else
+	exec kitty --directory "$DIR" --title "$(basename "$DIR")" -e nvim Inicio.md
+fi
