@@ -1,7 +1,7 @@
 #!/bin/sh
 # Abre el vault en nvim.
-# Desde una terminal: en la misma ventana. Desde dmenu o un atajo del WM, donde
-# no hay terminal en la que escribir, abre una ventana de kitty.
+# Desde una terminal: en la misma ventana. Desde dmenu o un atajo del WM: en una
+# ventana de kitty.
 # La ruta sale de OBSIDIAN_VAULT; exportala en tu perfil de shell.
 DIR="${OBSIDIAN_VAULT:-$HOME/vault}"
 
@@ -12,8 +12,18 @@ DIR="${OBSIDIAN_VAULT:-$HOME/vault}"
 
 cd "$DIR" || exit 1
 
-if [ -t 1 ]; then
+# No alcanza con [ -t 1 ]: si X arrancó con startx, el WM hereda /dev/tty1 y
+# todo lo que se lance desde dmenu lo hereda también. nvim se abriría en la
+# consola de texto, tapada por X y sin teclado — parece que se colgó la máquina.
+# Un emulador de terminal siempre da un pseudo-terminal (/dev/pts/*).
+# fd 3 conserva el stdout real: dentro de $( ) el fd 1 es el pipe de la
+# substitución, no la terminal.
+exec 3>&1
+case "$(readlink /proc/self/fd/3 2>/dev/null)" in
+/dev/pts/*)
 	exec nvim Inicio.md
-else
+	;;
+*)
 	exec kitty --directory "$DIR" --title "$(basename "$DIR")" -e nvim Inicio.md
-fi
+	;;
+esac
