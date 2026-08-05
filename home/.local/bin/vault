@@ -1,0 +1,14 @@
+#!/bin/sh
+# Abre el vault en kitty, no en el terminal por defecto: kitty resuelve los
+# glifos de Nerd Font arriba de U+FFFF que usan los íconos de heading.
+# La ruta sale de OBSIDIAN_VAULT; exportala en tu perfil de shell.
+DIR="${OBSIDIAN_VAULT:-$HOME/vault}"
+
+[ -d "$DIR" ] || {
+	printf 'no existe el vault: %s\nexportá OBSIDIAN_VAULT con la ruta correcta\n' "$DIR" >&2
+	exit 1
+}
+
+exec kitty --directory "$DIR" \
+	--title "$(basename "$DIR")" \
+	-e nvim Inicio.md
