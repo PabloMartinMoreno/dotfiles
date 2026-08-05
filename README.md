@@ -67,7 +67,16 @@ Todo cuelga de `<leader>o`:
 | `<leader>or` | Renombrar arrastrando los enlaces |
 | `<leader>om` / `<leader>oz` | Render on/off · modo zen |
 | `<leader>oc` | Corre `900-meta/consultas.py` del vault, si existe |
-| `gf` | Seguir wikilink |
+| `<leader>os` | Corrector español+inglés on/off |
+| `gf` / `<CR>` | Seguir wikilink · acción según contexto |
+
+Solo en markdown:
+
+| Tecla | Acción |
+|---|---|
+| `z1` … `z6` | Plegar al nivel de heading indicado (`zR`, `zM`, `za` nativos) |
+| `]]` / `[[` | Heading siguiente / anterior (ftplugin de nvim, sin configurar) |
+| `gsab` / `gsac` | Envolver en `**negrita**` / `` `código` `` |
 
 ## Decisiones que conviene no revertir sin leer
 

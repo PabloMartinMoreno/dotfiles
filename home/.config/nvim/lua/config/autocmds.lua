@@ -17,6 +17,23 @@ local function markdown_lectura()
   vim.opt_local.breakindent = true -- la continuación mantiene la sangría
   vim.opt_local.showbreak = "↳ "
   vim.opt_local.textwidth = 80 -- el texto nuevo se corta solo; da aire a la nota
+
+  -- Plegar por nivel de heading. El número es el nivel que queda visible:
+  -- z2 en una nota de tradecraft deja las cuatro secciones fijas a la vista.
+  -- Los nativos zR (abrir todo), zM (cerrar todo) y za (alternar) siguen igual.
+  for nivel = 1, 6 do
+    vim.keymap.set("n", "z" .. nivel, function()
+      vim.wo.foldlevel = nivel - 1
+    end, { buffer = true, desc = "Plegar a H" .. nivel })
+  end
+
+  -- Corrector: el vault mezcla prosa en español con términos en inglés, así que
+  -- van los dos idiomas juntos. Sugerencias con z=, agregar palabra con zg.
+  vim.keymap.set("n", "<leader>os", function()
+    vim.opt_local.spelllang = "es,en"
+    vim.opt_local.spell = not vim.wo.spell
+    vim.notify("corrector " .. (vim.wo.spell and "activado (es+en)" or "apagado"))
+  end, { buffer = true, desc = "Corrector es+en" })
 end
 
 vim.api.nvim_create_autocmd("FileType", {
