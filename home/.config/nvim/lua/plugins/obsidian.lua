@@ -73,6 +73,14 @@ return {
       { "<leader>og", "<cmd>Obsidian tags<cr>", desc = "Tags" },
       { "<leader>or", "<cmd>Obsidian rename<cr>", desc = "Renombrar (arrastra enlaces)" },
       { "<leader>oi", "<cmd>Obsidian toc<cr>", desc = "Índice de la nota" },
+      {
+        "<leader>op",
+        function()
+          -- Solo las matrices de referencia: los cheatsheets, sin el resto del vault.
+          Snacks.picker.files({ cwd = vault .. "/900-meta", pattern = "matriz de referencia" })
+        end,
+        desc = "Matrices de referencia (payloads)",
+      },
       { "<leader>oc", consultas, desc = "consultas.py" },
       { "gf", "<cmd>Obsidian follow_link<cr>", desc = "Seguir wikilink", ft = "markdown" },
       { "<leader>ox", "<cmd>Obsidian toggle_checkbox<cr>", desc = "Alternar checkbox" },
