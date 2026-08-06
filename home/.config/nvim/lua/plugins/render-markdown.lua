@@ -22,7 +22,18 @@ return {
       },
 
       -- El vault es tablas: esquema, matrices de dialectos, campos de telemetría.
-      pipe_table = { preset = "round", cell = "padded" },
+      pipe_table = { preset = "round", cell = "trimmed" },
+
+      -- Que la fila bajo el cursor no se des-renderice: las tablas dejaban de
+      -- estar alineadas justo donde estabas mirando.
+      anti_conceal = {
+        ignore = {
+          table_border = true,
+          head_border = true,
+          code_background = true,
+          sign = true,
+        },
+      },
 
       -- Sin fondo ni borde: cualquier relleno rompe la transparencia.
       code = { style = "none" },
