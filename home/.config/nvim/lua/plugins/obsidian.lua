@@ -28,6 +28,36 @@ local function consultas()
   end)
 end
 
+-- Índice de la nota. El `Obsidian toc` de la v3.16.6 usa vim.pos.cursor, que
+-- rompe en nvim 0.12. Esto lee los headings del buffer y salta al elegido.
+local function indice_nota()
+  local items = {}
+  for nr, linea in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
+    local almohadillas, texto = linea:match("^(#+)%s+(.+)$")
+    if almohadillas then
+      table.insert(items, {
+        lnum = nr,
+        texto = string.rep("  ", #almohadillas - 1) .. texto,
+      })
+    end
+  end
+  if #items == 0 then
+    vim.notify("la nota no tiene headings", vim.log.levels.INFO)
+    return
+  end
+  vim.ui.select(items, {
+    prompt = "Índice",
+    format_item = function(i)
+      return i.texto
+    end,
+  }, function(elegido)
+    if elegido then
+      vim.api.nvim_win_set_cursor(0, { elegido.lnum, 0 })
+      vim.cmd("normal! zz")
+    end
+  end)
+end
+
 return {
   {
     "obsidian-nvim/obsidian.nvim",
@@ -72,7 +102,7 @@ return {
       { "<leader>ol", "<cmd>Obsidian links<cr>", desc = "Enlaces salientes" },
       { "<leader>og", "<cmd>Obsidian tags<cr>", desc = "Tags" },
       { "<leader>or", "<cmd>Obsidian rename<cr>", desc = "Renombrar (arrastra enlaces)" },
-      { "<leader>oi", "<cmd>Obsidian toc<cr>", desc = "Índice de la nota" },
+      { "<leader>oi", indice_nota, desc = "Índice de la nota" },
       {
         "<leader>op",
         function()
