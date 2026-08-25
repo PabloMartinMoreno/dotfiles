@@ -1,3 +1,8 @@
 *.bak
 .dotfiles-respaldo-*/
 arch/
+
+# oh-my-zsh y sus plugins se clonan con `install.sh zsh`, no se versionan.
+home/.config/zsh/ohmyzsh/
+home/.config/zsh/.zcompdump*
+home/.config/zsh/.zsh_history
