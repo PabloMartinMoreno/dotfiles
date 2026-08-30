@@ -10,6 +10,9 @@ prepend_keymap = [
     { on = "x", run = "remove",                 desc = "Delete to trash" },
     { on = "X", run = "remove --permanently",   desc = "Delete permanently" },
 
+    # Wallpaper (setbg: imagen -> fondo, directorio -> random)
+    { on = "W", run = 'shell "setbg %s1"',      desc = "Set as wallpaper" },
+
     # Help (workaround tecla muerta ~ en layouts es/latam)
     { on = "?", run = "help",                   desc = "Open help" },
 ]

@@ -123,6 +123,7 @@ donde quedaste (`yazicd` en el `.zshrc`).
 | `l` | Entrar al directorio, o abrir el archivo (plugin `smart-enter`) |
 | `y` / `d` / `p` / `P` | Copiar / cortar / pegar / pegar pisando |
 | `x` / `X` | A la papelera / borrar de verdad |
+| `W` | Poner la imagen de fondo de pantalla; sobre un directorio, elige una al azar |
 | `?` | Ayuda (y `?` otra vez la cierra) |
 
 ## Decisiones que conviene no revertir sin leer
@@ -150,6 +151,9 @@ donde quedaste (`yazicd` en el `.zshrc`).
 - `enabled_layouts` de kitty tiene que empezar por `splits`: es el único layout donde
   `launch --location=hsplit/vsplit` decide dónde cae la ventana. Sin esa línea kitty usa
   `fat` y `alt+shift+enter` abre abajo en vez de a la derecha.
+- `W` en yazi llama a `setbg`, el script de LARBS que symlinkea la imagen a
+  `~/.local/share/bg` y corre `xwallpaper`. En una máquina sin LARBS el binding no hace
+  nada: hay que tener `setbg` en el `$PATH` o cambiar el comando en `keymap.toml`.
 - Los `run` de `yazi.toml` usan la interpolación propia de yazi (`%s`, `%s1`), no `"$@"`.
   Desde yazi 26 la sintaxis vieja no expande nada: el opener corre sin argumentos y abre
   nvim vacío o no abre el reproductor.
