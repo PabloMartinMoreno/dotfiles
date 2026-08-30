@@ -166,6 +166,11 @@ Encima de los `hjkl`, `/`, `n`/`N` y `gg`/`G` que ya trae:
 - `enabled_layouts` de kitty tiene que empezar por `splits`: es el único layout donde
   `launch --location=hsplit/vsplit` decide dónde cae la ventana. Sin esa línea kitty usa
   `fat` y `alt+shift+enter` abre abajo en vez de a la derecha.
+- `setbg` y `~/.config/wal/postrun` (los dos de LARBS, fuera de este repo) tienen una guarda
+  agregada a mano: si el config se alcanza a través de un symlink de directorio, pywal no lo
+  tematiza, y la rama que deshace el tema solo actúa sobre symlinks al cache. Sin eso,
+  instalar pywal renombraría el `zathurarc` versionado y dejaría un symlink al cache adentro
+  del repo. Si algún día se reinstala LARBS, hay que volver a aplicarla.
 - `W` en yazi llama a `setbg`, el script de LARBS que symlinkea la imagen a
   `~/.local/share/bg` y corre `xwallpaper`. En una máquina sin LARBS el binding no hace
   nada: hay que tener `setbg` en el `$PATH` o cambiar el comando en `keymap.toml`.
