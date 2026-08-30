@@ -1,0 +1,20 @@
+[mgr]
+prepend_keymap = [
+    { on = "l", run = ["plugin smart-enter"], desc = "Open file or enter directory" },
+
+    # Vim / lf style
+    { on = "d", run = "yank --cut",             desc = "Cut" },
+    { on = "y", run = "yank",                   desc = "Copy" },
+    { on = "p", run = "paste",                  desc = "Paste" },
+    { on = "P", run = "paste --force",          desc = "Paste (overwrite)" },
+    { on = "x", run = "remove",                 desc = "Delete to trash" },
+    { on = "X", run = "remove --permanently",   desc = "Delete permanently" },
+
+    # Help (workaround tecla muerta ~ en layouts es/latam)
+    { on = "?", run = "help",                   desc = "Open help" },
+]
+
+[help]
+prepend_keymap = [
+    { on = "?", run = "close", desc = "Close help" },
+]

@@ -19,6 +19,7 @@ RUTAS="
 .config/shell/bm-files
 .config/shell/inputrc
 .config/shell/profile
+.config/yazi
 .config/zsh/.p10k.zsh
 .config/zsh/.zshrc
 .local/bin/vault
@@ -86,15 +87,15 @@ zsh_plugins() {
 paquetes() {
 	# La Nerd Font es lo único que varía de verdad entre distros.
 	if command -v pacman >/dev/null; then
-		echo "sudo pacman -S --needed kitty neovim ripgrep fd lazygit git nodejs python-yaml ttf-jetbrains-mono-nerd zsh zoxide fzf"
+		echo "sudo pacman -S --needed kitty neovim ripgrep fd lazygit git nodejs python-yaml ttf-jetbrains-mono-nerd zsh zoxide fzf yazi"
 	elif command -v apt >/dev/null; then
-		echo "sudo apt install kitty neovim ripgrep fd-find git nodejs python3-yaml zsh zoxide fzf"
+		echo "sudo apt install kitty neovim ripgrep fd-find git nodejs python3-yaml zsh zoxide fzf yazi"
 		echo "# lazygit y la fuente van aparte: usar '$0 fuente'"
 	elif command -v dnf >/dev/null; then
-		echo "sudo dnf install kitty neovim ripgrep fd-find lazygit git nodejs python3-pyyaml zsh zoxide fzf"
+		echo "sudo dnf install kitty neovim ripgrep fd-find lazygit git nodejs python3-pyyaml zsh zoxide fzf yazi"
 		echo "# la fuente va aparte: usar '$0 fuente'"
 	elif command -v zypper >/dev/null; then
-		echo "sudo zypper install kitty neovim ripgrep fd lazygit git nodejs python3-PyYAML zsh zoxide fzf"
+		echo "sudo zypper install kitty neovim ripgrep fd lazygit git nodejs python3-PyYAML zsh zoxide fzf yazi"
 	else
 		echo "# gestor no reconocido, ver dependencias en el README"
 	fi
@@ -119,7 +120,7 @@ fuente() {
 
 comprobar() {
 	falta=0
-	for cmd in kitty nvim rg fd lazygit git zsh zoxide fzf; do
+	for cmd in kitty nvim rg fd lazygit git zsh zoxide fzf yazi; do
 		command -v "$cmd" >/dev/null || {
 			echo "falta: $cmd"
 			falta=1

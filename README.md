@@ -19,6 +19,7 @@ home/.config/shell/bm-dirs        marcadores de directorios (fuente de los atajo
 home/.config/shell/bm-files       marcadores de archivos de config
 home/.config/kitty/               paleta eldritch, JetBrainsMono NF, transparencia
 home/.config/nvim/                LazyVim + obsidian.nvim + render-markdown + paleta propia
+home/.config/yazi/                gestor de archivos: openers, keymap vim/lf, smart-enter
 home/.config/xdg-terminals.list   kitty como terminal por defecto (xdg-terminal-exec)
 home/.local/bin/vault             abre el vault en kitty
 arch/dwm-config.h                 específico de Arch/dwm, NO se instala solo
@@ -70,7 +71,8 @@ otra vez cuando quieras actualizar oh-my-zsh y los plugins.
 | `zoxide` | `cd` con historial | sí — el `.zshrc` lo carga si está |
 | `fzf` | `Ctrl-f`, y el plugin `fzf-tab` | sí |
 | `nodejs` | Varios LSP de LazyVim | recomendado |
-| `yazi` | `Ctrl-o` salta al directorio elegido | opcional |
+| `yazi` ≥ 26 | Gestor de archivos. `Ctrl-o` salta al directorio elegido | sí |
+| `mpv` | Lo que abre `xdg-open` para los videos del opener de yazi | recomendado |
 | `bat` | Plugin `zsh-bat` | opcional |
 
 ## Atajos propios
@@ -118,6 +120,9 @@ Solo en markdown:
   saltea sin quejarse.
 - El prompt instantáneo de powerlevel10k tiene que quedarse arriba de todo en el `.zshrc`.
   Cualquier cosa que pida input por consola va **antes** de ese bloque, o se traba.
+- Los `run` de `yazi.toml` usan la interpolación propia de yazi (`%s`, `%s1`), no `"$@"`.
+  Desde yazi 26 la sintaxis vieja no expande nada: el opener corre sin argumentos y abre
+  nvim vacío o no abre el reproductor.
 - El corrector ortográfico está apagado en markdown. LazyVim lo activa con `spelllang=en`, y
   sobre texto en español subraya casi cada palabra.
 
