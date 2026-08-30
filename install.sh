@@ -20,6 +20,7 @@ RUTAS="
 .config/shell/inputrc
 .config/shell/profile
 .config/yazi
+.config/zathura
 .config/zsh/.p10k.zsh
 .config/zsh/.zshrc
 .local/bin/vault

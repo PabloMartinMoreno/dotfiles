@@ -20,6 +20,7 @@ home/.config/shell/bm-files       marcadores de archivos de config
 home/.config/kitty/               paleta eldritch, JetBrainsMono NF, transparencia
 home/.config/nvim/                LazyVim + obsidian.nvim + render-markdown + paleta propia
 home/.config/yazi/                gestor de archivos: openers, keymap vim/lf, smart-enter
+home/.config/zathura/             visor de PDF: keymap vim, clipboard, sin padding
 home/.config/xdg-terminals.list   kitty como terminal por defecto (xdg-terminal-exec)
 home/.local/bin/vault             abre el vault en kitty
 arch/dwm-config.h                 específico de Arch/dwm, NO se instala solo
@@ -125,6 +126,20 @@ donde quedaste (`yazicd` en el `.zshrc`).
 | `x` / `X` | A la papelera / borrar de verdad |
 | `W` | Poner la imagen de fondo de pantalla; sobre un directorio, elige una al azar |
 | `?` | Ayuda (y `?` otra vez la cierra) |
+
+### zathura
+
+Encima de los `hjkl`, `/`, `n`/`N` y `gg`/`G` que ya trae:
+
+| Tecla | Acción |
+|---|---|
+| `u` / `d` | Media pantalla arriba / abajo |
+| `K` / `J` | Zoom más / menos |
+| `g` | Al principio del documento |
+| `D` | Una página o dos por pantalla |
+| `i` | Invertir colores (modo noche) |
+| `r` / `R` | Recargar el archivo / rotar |
+| `p` | Imprimir |
 
 ## Decisiones que conviene no revertir sin leer
 
