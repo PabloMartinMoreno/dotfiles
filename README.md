@@ -1,6 +1,6 @@
 # dotfiles
 
-Entorno de notas en Markdown: **zsh + kitty + Neovim (LazyVim) + obsidian.nvim**, con una
+Entorno de notas en Markdown: **zsh + kitty + Neovim (LazyVim) + obsidian.nvim + yazi**, con una
 paleta única compartida entre el terminal y el editor. Portable a cualquier distro.
 
 Headings con barra de color sólida, tablas con borde, sin corrector subrayando texto en
@@ -77,6 +77,8 @@ otra vez cuando quieras actualizar oh-my-zsh y los plugins.
 
 ## Atajos propios
 
+### Neovim
+
 Todo cuelga de `<leader>o`:
 
 | Tecla | Acción |
@@ -97,6 +99,31 @@ Solo en markdown:
 | `z1` … `z6` | Plegar al nivel de heading indicado (`zR`, `zM`, `za` nativos) |
 | `]]` / `[[` | Heading siguiente / anterior (ftplugin de nvim, sin configurar) |
 | `gsab` / `gsac` | Envolver en `**negrita**` / `` `código` `` |
+
+### kitty
+
+| Tecla | Acción |
+|---|---|
+| `alt+enter` / `alt+shift+enter` | Split abajo / a la derecha, heredando el directorio |
+| `alt+shift+h` / `alt+shift+l` | Ventana vecina a la izquierda / derecha |
+| `alt+h` / `alt+l` / `alt+t` | Pestaña anterior / siguiente / nueva |
+| `ctrl+shift+l` | Layout siguiente |
+| `ctrl+alt+r` / `ctrl+alt+s` | Ir al layout `tall` / `stack` |
+| `alt+c` / `alt+v` | Copiar / pegar del portapapeles |
+| `alt+u` / `alt+d` | Scroll de una página arriba / abajo |
+| `ctrl+shift+f5` | Recargar la config en las ventanas ya abiertas |
+
+### yazi
+
+Desde el shell: `y` lo abre, y `Ctrl-o` lo abre y al salir deja el shell en el directorio
+donde quedaste (`yazicd` en el `.zshrc`).
+
+| Tecla | Acción |
+|---|---|
+| `l` | Entrar al directorio, o abrir el archivo (plugin `smart-enter`) |
+| `y` / `d` / `p` / `P` | Copiar / cortar / pegar / pegar pisando |
+| `x` / `X` | A la papelera / borrar de verdad |
+| `?` | Ayuda (y `?` otra vez la cierra) |
 
 ## Decisiones que conviene no revertir sin leer
 
@@ -120,6 +147,9 @@ Solo en markdown:
   saltea sin quejarse.
 - El prompt instantáneo de powerlevel10k tiene que quedarse arriba de todo en el `.zshrc`.
   Cualquier cosa que pida input por consola va **antes** de ese bloque, o se traba.
+- `enabled_layouts` de kitty tiene que empezar por `splits`: es el único layout donde
+  `launch --location=hsplit/vsplit` decide dónde cae la ventana. Sin esa línea kitty usa
+  `fat` y `alt+shift+enter` abre abajo en vez de a la derecha.
 - Los `run` de `yazi.toml` usan la interpolación propia de yazi (`%s`, `%s1`), no `"$@"`.
   Desde yazi 26 la sintaxis vieja no expande nada: el opener corre sin argumentos y abre
   nvim vacío o no abre el reproductor.
