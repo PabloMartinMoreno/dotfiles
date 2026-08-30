@@ -1,0 +1,39 @@
+#!/bin/sh
+# Pone una imagen de fondo de pantalla. Si se le pasa un directorio, elige una al azar.
+# POSIX sh a propósito, igual que install.sh.
+
+set -eu
+
+[ $# -eq 1 ] || {
+	echo "uso: ${0##*/} <imagen|directorio>" >&2
+	exit 1
+}
+
+img=$(readlink -f "$1")
+[ -d "$img" ] && img=$(find "$img" -type f \
+	\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) |
+	shuf -n 1)
+[ -n "$img" ] && [ -f "$img" ] || {
+	echo "no hay imagen en: $1" >&2
+	exit 1
+}
+
+# El primero que esté instalado gana. `setbg` va primero porque en una máquina LARBS
+# además deja el symlink en ~/.local/share/bg, que es de donde el arranque de X
+# restaura el fondo; los demás backends solo lo pintan en la sesión actual.
+if command -v setbg >/dev/null 2>&1; then
+	setbg "$img"
+elif command -v xwallpaper >/dev/null 2>&1; then
+	xwallpaper --zoom "$img"
+elif command -v feh >/dev/null 2>&1; then
+	feh --no-fehbg --bg-fill "$img"
+elif command -v swaybg >/dev/null 2>&1; then
+	pkill -x swaybg 2>/dev/null || :
+	swaybg -m fill -i "$img" >/dev/null 2>&1 &
+elif command -v gsettings >/dev/null 2>&1; then
+	gsettings set org.gnome.desktop.background picture-uri "file://$img"
+	gsettings set org.gnome.desktop.background picture-uri-dark "file://$img"
+else
+	echo "no hay con qué poner el fondo (xwallpaper, feh, swaybg o gsettings)" >&2
+	exit 1
+fi

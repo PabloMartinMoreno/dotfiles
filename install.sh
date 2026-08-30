@@ -24,6 +24,7 @@ RUTAS="
 .config/zsh/.p10k.zsh
 .config/zsh/.zshrc
 .local/bin/vault
+.local/bin/wallpaper
 .zprofile
 "
 
@@ -59,7 +60,7 @@ enlazar() {
 		ln -s "$origen" "$destino"
 		echo "enlazado: $rel"
 	done
-	chmod +x "$ORIGEN/.local/bin/vault"
+	chmod +x "$ORIGEN/.local/bin/"*
 	# HISTFILE apunta acá y zsh no crea el directorio: sin esto no hay historial.
 	mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
 }

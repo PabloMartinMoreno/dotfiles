@@ -23,7 +23,7 @@ home/.config/yazi/                gestor de archivos: openers, keymap vim/lf, sm
 home/.config/zathura/             visor de PDF: keymap vim, clipboard, sin padding
 home/.config/xdg-terminals.list   kitty como terminal por defecto (xdg-terminal-exec)
 home/.local/bin/vault             abre el vault en kitty
-arch/dwm-config.h                 específico de Arch/dwm, NO se instala solo
+home/.local/bin/wallpaper         pone una imagen de fondo, con el backend que haya
 ```
 
 ## Instalar
@@ -166,14 +166,15 @@ Encima de los `hjkl`, `/`, `n`/`N` y `gg`/`G` que ya trae:
 - `enabled_layouts` de kitty tiene que empezar por `splits`: es el único layout donde
   `launch --location=hsplit/vsplit` decide dónde cae la ventana. Sin esa línea kitty usa
   `fat` y `alt+shift+enter` abre abajo en vez de a la derecha.
-- `setbg` y `~/.config/wal/postrun` (los dos de LARBS, fuera de este repo) tienen una guarda
-  agregada a mano: si el config se alcanza a través de un symlink de directorio, pywal no lo
-  tematiza, y la rama que deshace el tema solo actúa sobre symlinks al cache. Sin eso,
-  instalar pywal renombraría el `zathurarc` versionado y dejaría un symlink al cache adentro
-  del repo. Si algún día se reinstala LARBS, hay que volver a aplicarla.
-- `W` en yazi llama a `setbg`, el script de LARBS que symlinkea la imagen a
-  `~/.local/share/bg` y corre `xwallpaper`. En una máquina sin LARBS el binding no hace
-  nada: hay que tener `setbg` en el `$PATH` o cambiar el comando en `keymap.toml`.
+- `W` en yazi llama a `wallpaper`, no a un comando de un entorno gráfico concreto. El script
+  prueba `setbg`, `xwallpaper`, `feh`, `swaybg` y `gsettings`, en ese orden, y usa el primero
+  que esté. `setbg` va primero porque donde existe además persiste el fondo entre sesiones;
+  los otros lo pintan solo en la sesión actual.
+- Como los configs se enlazan por symlink, cualquier programa que **reescriba** un config en
+  vez de editarlo termina tocando el archivo versionado. pywal es el caso típico: renombra
+  `zathurarc` y deja un symlink a su cache, que acá caería adentro del repo. Si aparece algo
+  así, la guarda va en ese programa (comparar `readlink -f` con la ruta y saltear si
+  difieren), no en el dotfiles.
 - Los `run` de `yazi.toml` usan la interpolación propia de yazi (`%s`, `%s1`), no `"$@"`.
   Desde yazi 26 la sintaxis vieja no expande nada: el opener corre sin argumentos y abre
   nvim vacío o no abre el reproductor.
@@ -184,5 +185,5 @@ Encima de los `hjkl`, `/`, `n`/`N` y `gg`/`G` que ya trae:
 
 El contenido del vault: son notas, no configuración. Va en su propio repo.
 
-`arch/dwm-config.h` está de referencia — depende de tener las fuentes de suckless en
-`~/.local/src` y de recompilar. En otra distro alcanza con que `$TERMINAL` sea `kitty`.
+La config del gestor de ventanas tampoco: es lo único que cambia de máquina a máquina.
+Acá solo se asume que `$TERMINAL` sea `kitty`.
