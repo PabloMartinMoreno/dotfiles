@@ -28,6 +28,75 @@ local function consultas()
   end)
 end
 
+-- Saltar a una nota. `Obsidian quick_switch` es un picker de archivos: filtra
+-- ruta y nombre, no abre el frontmatter, y por lo tanto nunca encuentra por
+-- alias. Como las convenciones del vault exigen el alias en el otro idioma,
+-- esto lee los aliases y los suma al texto buscable de cada nota: una sola
+-- búsqueda que acierta tanto con el nombre como con el alias.
+local function aliases_de(ruta)
+  local aliases, en_fm, en_lista = {}, false, false
+  local function limpiar(s)
+    return (vim.trim(s):gsub('^"(.*)"$', "%1"):gsub("^'(.*)'$", "%1"))
+  end
+  for linea in io.lines(ruta) do
+    if linea:match("^%-%-%-%s*$") then
+      if en_fm then
+        break
+      end
+      en_fm = true
+    elseif en_fm then
+      local inline = linea:match("^aliases:%s*%[(.*)%]%s*$")
+      if inline then
+        for a in inline:gmatch("[^,]+") do
+          table.insert(aliases, limpiar(a))
+        end
+        en_lista = false
+      elseif linea:match("^aliases:%s*$") then
+        en_lista = true
+      elseif en_lista then
+        local a = linea:match("^%s+%-%s*(.+)$")
+        if a then
+          table.insert(aliases, limpiar(a))
+        else
+          en_lista = false
+        end
+      end
+    end
+  end
+  return aliases
+end
+
+local function saltar_a_nota()
+  Snacks.picker({
+    title = "Notas — nombre y alias",
+    finder = function()
+      local items = {}
+      for _, ruta in ipairs(vim.fn.globpath(vault, "**/*.md", false, true)) do
+        local nombre = vim.fn.fnamemodify(ruta, ":t:r")
+        local aliases = aliases_de(ruta)
+        table.insert(items, {
+          file = ruta,
+          nombre = nombre,
+          aliases = aliases,
+          text = nombre .. " " .. table.concat(aliases, " "),
+        })
+      end
+      return items
+    end,
+    format = function(item)
+      local linea = { { item.nombre, "SnacksPickerFile" } }
+      if #item.aliases > 0 then
+        table.insert(linea, { "  " .. table.concat(item.aliases, " · "), "SnacksPickerComment" })
+      end
+      return linea
+    end,
+    confirm = function(picker, item)
+      picker:close()
+      vim.cmd.edit(vim.fn.fnameescape(item.file))
+    end,
+  })
+end
+
 -- Índice de la nota. El `Obsidian toc` de la v3.16.6 usa vim.pos.cursor, que
 -- rompe en nvim 0.12. Esto lee los headings del buffer y salta al elegido.
 local function indice_nota()
@@ -94,7 +163,7 @@ return {
     keys = {
       { "<leader>o", "", desc = "+obsidian" },
       { "<leader>oo", "<cmd>Obsidian search<cr>", desc = "Buscar en el vault" },
-      { "<leader>oq", "<cmd>Obsidian quick_switch<cr>", desc = "Saltar a nota" },
+      { "<leader>oq", saltar_a_nota, desc = "Saltar a nota (nombre o alias)" },
       { "<leader>on", "<cmd>Obsidian new_from_template<cr>", desc = "Nota nueva desde plantilla" },
       { "<leader>oN", "<cmd>Obsidian new<cr>", desc = "Nota nueva vacía" },
       { "<leader>ot", "<cmd>Obsidian template<cr>", desc = "Insertar plantilla acá" },
