@@ -35,8 +35,17 @@ return {
         },
       },
 
-      -- Sin fondo ni borde: cualquier relleno rompe la transparencia.
-      code = { style = "none" },
+      -- `style = "none"` era un preset que hacía `enabled = false`: apagaba el
+      -- render de código entero. Se configura a mano para tener el encabezado
+      -- de lenguaje sin fondo, que es lo que rompía la transparencia.
+      code = {
+        disable_background = true, -- sin relleno: la transparencia se mantiene
+        border = "thin", -- ▄▀ arriba y abajo en vez de un bloque de color
+        language_icon = true,
+        language_name = true,
+        position = "right", -- el icono no empuja la primera línea
+        inline = true, -- el `código` en línea también se marca
+      },
 
       bullet = { icons = { "●", "○", "◆", "◇" } },
       quote = { icon = "▎" },

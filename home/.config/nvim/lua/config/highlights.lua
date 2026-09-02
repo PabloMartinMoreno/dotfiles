@@ -17,13 +17,20 @@ local function aplicar()
     vim.api.nvim_set_hl(0, "@markup.heading." .. nivel .. ".markdown", barra)
   end
 
-  -- Sin fondo en los bloques de código: si no, rompen la transparencia.
+  -- Bloques de código sin fondo, para no romper la transparencia. Pero SIN
+  -- forzarles un `fg`: hacerlo pintaba el bloque entero del gris de comentario
+  -- y tapaba los colores que treesitter ya aplica adentro del fence.
+  vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "NONE" })
+  -- El borde ▄▀ y el encabezado del lenguaje: visibles, sin gritar.
+  vim.api.nvim_set_hl(0, "RenderMarkdownCodeBorder", { bg = "NONE", fg = p.violeta })
+  vim.api.nvim_set_hl(0, "RenderMarkdownCodeInfo", { bg = "NONE", fg = p.violeta })
+  -- Código en línea: el vault está lleno de flags y campos entre backticks.
+  -- Con el gris de comentario no se distinguían de la prosa.
   for _, grupo in ipairs({
-    "RenderMarkdownCode",
     "RenderMarkdownCodeInline",
-    "RenderMarkdownCodeBorder",
+    "@markup.raw.markdown_inline",
   }) do
-    vim.api.nvim_set_hl(0, grupo, { bg = "NONE", fg = p.comentario })
+    vim.api.nvim_set_hl(0, grupo, { bg = "NONE", fg = p.naranja })
   end
 
   vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { fg = p.violeta })
