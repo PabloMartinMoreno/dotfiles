@@ -33,6 +33,13 @@ local function aplicar()
     vim.api.nvim_set_hl(0, grupo, { bg = "NONE", fg = p.naranja })
   end
 
+  -- Negrita: el peso de fuente solo no se distingue en esta tipografía. Un color
+  -- propio la separa de la prosa. rosa solo lo usa la cabecera de tabla (bloque),
+  -- así que en línea no choca con nada.
+  for _, grupo in ipairs({ "@markup.strong", "@markup.strong.markdown_inline" }) do
+    vim.api.nvim_set_hl(0, grupo, { fg = p.rosa, bold = true })
+  end
+
   vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { fg = p.violeta })
   vim.api.nvim_set_hl(0, "RenderMarkdownQuote", { fg = p.comentario })
   vim.api.nvim_set_hl(0, "RenderMarkdownTableHead", { fg = p.rosa })
