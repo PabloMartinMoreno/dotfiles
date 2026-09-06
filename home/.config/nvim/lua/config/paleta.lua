@@ -19,6 +19,7 @@ return {
   rojo = "#f16c75",
   rojo_fuerte = "#f0313e",
   naranja = "#f7c67f",
+  naranja_fuerte = "#ff8c42",
 
   -- Orden de los seis niveles de heading. H2 y H3 van cambiados respecto de la
   -- paleta original: el cyan pesa menos que el verde y ordena mejor la jerarquía.
