@@ -15,6 +15,7 @@ return {
   cyan_brillante = "#39DDFD",
   violeta = "#a48cf2",
   amarillo = "#f1fc79",
+  dorado = "#f2c14e",
   rojo = "#f16c75",
   rojo_fuerte = "#f0313e",
   naranja = "#f7c67f",
