@@ -13,6 +13,7 @@ return {
   verde = "#37f499",
   cyan = "#04d1f9",
   cyan_brillante = "#39DDFD",
+  celeste = "#7dcfff",
   violeta = "#a48cf2",
   amarillo = "#f1fc79",
   dorado = "#f2c14e",
