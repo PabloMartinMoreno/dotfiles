@@ -15,6 +15,7 @@ return {
   cyan_brillante = "#39DDFD",
   celeste = "#7dcfff",
   azul = "#82aaff",
+  teal = "#3fd6c4",
   violeta = "#a48cf2",
   amarillo = "#f1fc79",
   dorado = "#f2c14e",
