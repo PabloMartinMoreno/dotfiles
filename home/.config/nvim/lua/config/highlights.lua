@@ -53,11 +53,13 @@ local function aplicar()
 
   -- Callouts: color por semántica de la palabra, no el default del tema.
   -- Cada callout de render-markdown.lua apunta a uno de estos grupos.
-  vim.api.nvim_set_hl(0, "RenderMarkdownInfo", { fg = p.teal }) -- info · nota · resumen
+  vim.api.nvim_set_hl(0, "RenderMarkdownInfo", { fg = p.teal }) -- info
+  vim.api.nvim_set_hl(0, "RenderMarkdownCalloutNota", { fg = p.violeta }) -- nota
+  vim.api.nvim_set_hl(0, "RenderMarkdownCalloutResumen", { fg = p.azul }) -- resumen
   vim.api.nvim_set_hl(0, "RenderMarkdownSuccess", { fg = p.dorado }) -- tip
   vim.api.nvim_set_hl(0, "RenderMarkdownWarn", { fg = p.naranja_fuerte }) -- atención
   vim.api.nvim_set_hl(0, "RenderMarkdownError", { fg = p.rojo_fuerte }) -- peligro
-  vim.api.nvim_set_hl(0, "RenderMarkdownHint", { fg = p.violeta }) -- importante
+  vim.api.nvim_set_hl(0, "RenderMarkdownHint", { fg = p.rosa }) -- importante
 
   -- Frontmatter apagado: es metadata, no contenido.
   vim.api.nvim_set_hl(0, "@property.yaml", { fg = p.comentario })

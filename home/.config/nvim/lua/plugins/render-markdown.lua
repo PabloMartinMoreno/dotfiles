@@ -66,8 +66,8 @@ return {
         danger = { raw = "[!DANGER]", rendered = "󱐌 Peligro", highlight = "RenderMarkdownError" },
         info = { raw = "[!INFO]", rendered = "󰋽 Info", highlight = "RenderMarkdownInfo" },
         tip = { raw = "[!TIP]", rendered = "󰌶 Tip", highlight = "RenderMarkdownSuccess" },
-        note = { raw = "[!NOTE]", rendered = "󰋽 Nota", highlight = "RenderMarkdownInfo" },
-        abstract = { raw = "[!ABSTRACT]", rendered = "󰨸 Resumen", highlight = "RenderMarkdownInfo" },
+        note = { raw = "[!NOTE]", rendered = "󰋽 Nota", highlight = "RenderMarkdownCalloutNota" },
+        abstract = { raw = "[!ABSTRACT]", rendered = "󰨸 Resumen", highlight = "RenderMarkdownCalloutResumen" },
       },
     },
     keys = {
