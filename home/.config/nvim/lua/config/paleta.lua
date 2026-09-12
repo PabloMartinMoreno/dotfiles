@@ -26,7 +26,7 @@ return {
 
   -- Orden de los seis niveles de heading. H2 y H3 van cambiados respecto de la
   -- paleta original: el cyan pesa menos que el verde y ordena mejor la jerarquía.
-  headings = { "#f0313e", "#04d1f9", "#37f499", "#a48cf2", "#f7c67f", "#f1fc79" },
+  headings = { "#f0313e", "#04d1f9", "#37f499", "#a48cf2", "#f7c67f", "#f265b5" },
   -- Texto sobre la barra del heading. Oscuro, para que el color sea el que grita.
   heading_texto = "#171928",
 }

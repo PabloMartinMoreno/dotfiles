@@ -30,7 +30,7 @@ local function aplicar()
     "RenderMarkdownCodeInline",
     "@markup.raw.markdown_inline",
   }) do
-    vim.api.nvim_set_hl(0, grupo, { bg = "NONE", fg = p.celeste })
+    vim.api.nvim_set_hl(0, grupo, { bg = "NONE", fg = p.dorado })
   end
 
   -- Negrita: el peso de fuente solo no se distingue en esta tipografía. Un color
