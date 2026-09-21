@@ -16,7 +16,8 @@ local function markdown_lectura()
   vim.opt_local.linebreak = true -- no corta palabras al medio
   vim.opt_local.breakindent = true -- la continuación mantiene la sangría
   vim.opt_local.showbreak = "↳ "
-  vim.opt_local.textwidth = 80 -- el texto nuevo se corta solo; da aire a la nota
+  vim.opt_local.textwidth = 80 -- para `gq`; el wrap visual ya lo da wrap+linebreak
+  vim.opt_local.formatoptions:remove("t") -- sin esto, corta con newline real al tipear
 
   -- Plegar por nivel de heading. El número es el nivel que queda visible:
   -- z2 en una nota de tradecraft deja las cuatro secciones fijas a la vista.
