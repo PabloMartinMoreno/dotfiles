@@ -136,31 +136,40 @@ source $ZSH/oh-my-zsh.sh
 FAST_HIGHLIGHT_STYLES[comment]='fg=242'
 
 # j/k en vicmd: buscar por prefijo, igual que las flechas (up-line-or-beginning-
-# search, que liga omz). Los widgets stock no sirven tal cual: buscan por lo que
-# hay ANTES del cursor, y al salir de insert el cursor queda sobre el último
-# carácter, así que "git" buscaría por "gi" y traería un gimp. Al arrancar la
-# búsqueda se corre el cursor al final; en las repeticiones se restaura el
-# guardado para que el prefijo no se mueva con cada match.
-# Va después de omz porque su key-bindings.zsh se carga ahí.
-typeset -g __vi_hist_cursor
+# search, que liga omz). Dos razones para no ligar los widgets stock tal cual:
+#  - buscan por lo que hay ANTES del cursor, y al salir de insert el cursor
+#    queda sobre el último carácter, así que "git" buscaría por "gi".
+#  - detectan "búsqueda en curso" mirando $LASTWIDGET, que zsh-autosuggestions
+#    pisa con su propio autosuggest-suggest asíncrono; el resultado es que j
+#    toma el comando entero como prefijo y no avanza.
+# Acá el prefijo se fija al arrancar y la continuidad se detecta comparando el
+# buffer con el último match propio, sin depender de $LASTWIDGET.
+# Los widgets NO pueden llevar guion bajo inicial: zsh-autosuggestions descarta
+# `_*` al envolver, y sin envolver nunca limpia POSTDISPLAY, así que la
+# sugerencia vieja queda pegada al final de la línea. Va después de omz porque
+# su key-bindings.zsh se carga ahí.
+typeset -g __vi_hist_prefix='' __vi_hist_match=''
 
-_vi-hist-search() {
-  if [[ $LASTWIDGET == _vi-hist-(up|down) ]]; then
-    CURSOR=$__vi_hist_cursor
+vi-hist-search() {
+  if [[ -n $__vi_hist_match && $BUFFER == "$__vi_hist_match" ]]; then
+    CURSOR=${#__vi_hist_prefix}
   else
-    __vi_hist_cursor=${#BUFFER}
-    CURSOR=$__vi_hist_cursor
+    __vi_hist_prefix=$BUFFER
+    CURSOR=${#BUFFER}
   fi
-  zle ".history-beginning-search-$1" && zle .end-of-line
+  if zle ".history-beginning-search-$1"; then
+    zle .end-of-line
+    __vi_hist_match=$BUFFER
+  fi
 }
-_vi-hist-up()   { [[ $LBUFFER == *$'\n'* ]] && { zle .up-line-or-history; return }
-                  _vi-hist-search backward }
-_vi-hist-down() { [[ $RBUFFER == *$'\n'* ]] && { zle .down-line-or-history; return }
-                  _vi-hist-search forward }
-zle -N _vi-hist-up
-zle -N _vi-hist-down
-bindkey -M vicmd 'k' _vi-hist-up
-bindkey -M vicmd 'j' _vi-hist-down
+vi-hist-up()   { [[ $LBUFFER == *$'\n'* ]] && { zle .up-line-or-history; return }
+                 vi-hist-search backward }
+vi-hist-down() { [[ $RBUFFER == *$'\n'* ]] && { zle .down-line-or-history; return }
+                 vi-hist-search forward }
+zle -N vi-hist-up
+zle -N vi-hist-down
+bindkey -M vicmd 'k' vi-hist-up
+bindkey -M vicmd 'j' vi-hist-down
 
 # Título: solo la carpeta actual, no el path completo.
 # Va después de cargar omz porque termsupport.zsh lo asigna de forma directa.
