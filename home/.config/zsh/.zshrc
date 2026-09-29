@@ -131,6 +131,10 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# fast-syntax-highlighting: default comment color es black,bold -> invisible
+# en fondo oscuro. 237 es gris de la rampa fija xterm-256 (no lo remapea kitty).
+FAST_HIGHLIGHT_STYLES[comment]='fg=242'
+
 # Título: solo la carpeta actual, no el path completo.
 # Va después de cargar omz porque termsupport.zsh lo asigna de forma directa.
 # kitty muestra en la pestaña el título de VENTANA (OSC 2 = _TITLE_IDLE), no el
