@@ -132,7 +132,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # fast-syntax-highlighting: default comment color es black,bold -> invisible
-# en fondo oscuro. 237 es gris de la rampa fija xterm-256 (no lo remapea kitty).
+# en fondo oscuro. 242 es gris de la rampa fija xterm-256 (no lo remapea kitty).
 FAST_HIGHLIGHT_STYLES[comment]='fg=242'
 
 # Título: solo la carpeta actual, no el path completo.
