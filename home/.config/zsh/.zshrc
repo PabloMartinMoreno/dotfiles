@@ -135,6 +135,33 @@ source $ZSH/oh-my-zsh.sh
 # en fondo oscuro. 242 es gris de la rampa fija xterm-256 (no lo remapea kitty).
 FAST_HIGHLIGHT_STYLES[comment]='fg=242'
 
+# j/k en vicmd: buscar por prefijo, igual que las flechas (up-line-or-beginning-
+# search, que liga omz). Los widgets stock no sirven tal cual: buscan por lo que
+# hay ANTES del cursor, y al salir de insert el cursor queda sobre el último
+# carácter, así que "git" buscaría por "gi" y traería un gimp. Al arrancar la
+# búsqueda se corre el cursor al final; en las repeticiones se restaura el
+# guardado para que el prefijo no se mueva con cada match.
+# Va después de omz porque su key-bindings.zsh se carga ahí.
+typeset -g __vi_hist_cursor
+
+_vi-hist-search() {
+  if [[ $LASTWIDGET == _vi-hist-(up|down) ]]; then
+    CURSOR=$__vi_hist_cursor
+  else
+    __vi_hist_cursor=${#BUFFER}
+    CURSOR=$__vi_hist_cursor
+  fi
+  zle ".history-beginning-search-$1" && zle .end-of-line
+}
+_vi-hist-up()   { [[ $LBUFFER == *$'\n'* ]] && { zle .up-line-or-history; return }
+                  _vi-hist-search backward }
+_vi-hist-down() { [[ $RBUFFER == *$'\n'* ]] && { zle .down-line-or-history; return }
+                  _vi-hist-search forward }
+zle -N _vi-hist-up
+zle -N _vi-hist-down
+bindkey -M vicmd 'k' _vi-hist-up
+bindkey -M vicmd 'j' _vi-hist-down
+
 # Título: solo la carpeta actual, no el path completo.
 # Va después de cargar omz porque termsupport.zsh lo asigna de forma directa.
 # kitty muestra en la pestaña el título de VENTANA (OSC 2 = _TITLE_IDLE), no el
