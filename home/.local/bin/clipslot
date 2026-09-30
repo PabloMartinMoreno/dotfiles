@@ -39,15 +39,26 @@ chmod 700 "$dir"
 case ${1:-} in
 copy)
 	validate "${2:-}"
-	# A un archivo aparte: si el clipboard está vacío no quiero haber borrado
-	# el slot que ya tenía algo.
+	# A un archivo aparte: si no hay nada que copiar no quiero haber borrado el
+	# slot que ya tenía algo.
 	tmp=$(mktemp "$dir/.tmp.XXXXXX")
-	if xclip -selection clipboard -o >"$tmp" 2>/dev/null && [ -s "$tmp" ]; then
+	src=clipboard
+	if ! { xclip -selection clipboard -o >"$tmp" 2>/dev/null && [ -s "$tmp" ]; }; then
+		# Clipboard vacío: cae a lo resaltado con el mouse. Ctrl+C siempre
+		# gana, así que después de un clear el mouse alcanza.
+		src=mouse
+		xclip -selection primary -o >"$tmp" 2>/dev/null || true
+	fi
+	if [ -s "$tmp" ]; then
 		mv "$tmp" "$dir/$2"
-		notify "Slot $2 guardado" "$(preview "$dir/$2")"
+		if [ "$src" = mouse ]; then
+			notify "Slot $2 guardado (mouse)" "$(preview "$dir/$2")"
+		else
+			notify "Slot $2 guardado" "$(preview "$dir/$2")"
+		fi
 	else
 		rm -f "$tmp"
-		notify "Clipboard vacío" "El slot $2 quedó como estaba"
+		notify "Nada para guardar" "El slot $2 quedó como estaba"
 		exit 1
 	fi
 	;;
