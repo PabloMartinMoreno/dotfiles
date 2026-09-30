@@ -44,6 +44,19 @@ paste)
 	validate "${2:-}"
 	[ -s "$dir/$2" ] || exit 1
 	put <"$dir/$2"
+	# xclip tarda un instante en tomar posesión de la selección; sin esto el
+	# paste puede salir con el contenido anterior.
+	sleep 0.15
+	# --clearmodifiers porque el atajo se dispara con alt+shift apretados.
+	# Los terminales pegan con ctrl+shift+v, el resto con ctrl+v.
+	case $(xdotool getactivewindow getwindowclassname 2>/dev/null) in
+	kitty | Alacritty | st | st-256color | URxvt | XTerm | foot)
+		xdotool key --clearmodifiers ctrl+shift+v
+		;;
+	*)
+		xdotool key --clearmodifiers ctrl+v
+		;;
+	esac
 	;;
 list)
 	n=1
