@@ -25,6 +25,8 @@ alt + F7
 alt + F8
 	$HOME/.local/bin/clipslot list | dmenu -l 6 -p slots | cut -d: -f1 | xargs -r $HOME/.local/bin/clipslot paste
 
-# limpiar todo: historial y slots
+# limpiar todo: selección actual, historial y slots. Las selecciones van
+# primero para que el borrado del historial se lleve también el registro de
+# haberlas vaciado. Sin los xsel, lo último que copiaste sigue pegable.
 alt + F12
-	clipdel -d '.*' ; $HOME/.local/bin/clipslot clear
+	xsel -bc ; xsel -pc ; clipdel -d '.*' ; $HOME/.local/bin/clipslot clear
