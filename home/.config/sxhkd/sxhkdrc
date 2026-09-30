@@ -27,4 +27,4 @@ alt + F8
 
 # limpiar todo: historial y slots
 alt + F12
-	clipdel -d '.' ; $HOME/.local/bin/clipslot clear
+	clipdel -d '.*' ; $HOME/.local/bin/clipslot clear

@@ -15,7 +15,13 @@ xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!	# Uncomment t
 
 # clipmenud guarda el historial del portapapeles en $XDG_RUNTIME_DIR (tmpfs),
 # así que se vacía solo al reiniciar. sxhkd liga los atajos de clipslot.
-autostart="mpd picom dunst unclutter remapd greenclip clipmenud sxhkd"
+# Sin PRIMARY: si no, cada texto que se resalta con el mouse entra al historial.
+# Ojo: el `pidof -sx` de abajo no detecta a clipmenud porque es un script y su
+# comm es bash. No importa: clipmenud tiene su propio session lock y un segundo
+# intento sale solo.
+export CM_SELECTIONS=clipboard
+export CM_HISTLENGTH=15
+autostart="mpd picom dunst unclutter remapd clipmenud sxhkd"
 
 for program in $autostart; do
 	pidof -sx "$program" || "$program" &
