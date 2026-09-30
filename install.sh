@@ -25,6 +25,7 @@ RUTAS="
 .config/zsh/.zshrc
 .local/bin/vault
 .local/bin/wallpaper
+.xprofile
 .zprofile
 "
 
