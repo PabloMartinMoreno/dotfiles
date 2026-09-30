@@ -24,6 +24,15 @@ validate() {
 # llamador y lo deja esperando EOF para siempre.
 put() { xclip -selection clipboard -i >/dev/null 2>&1; }
 
+preview() { tr '\n\t' '  ' <"$1" | cut -c1-60; }
+
+# Sin esto un slot que no se guardó es indistinguible de uno que sí: los atajos
+# no devuelven nada a la pantalla.
+notify() {
+	command -v notify-send >/dev/null 2>&1 || return 0
+	notify-send -a clipslot -t 1500 "$1" "${2-}" || true
+}
+
 mkdir -p "$dir"
 chmod 700 "$dir"
 
@@ -35,14 +44,19 @@ copy)
 	tmp=$(mktemp "$dir/.tmp.XXXXXX")
 	if xclip -selection clipboard -o >"$tmp" 2>/dev/null && [ -s "$tmp" ]; then
 		mv "$tmp" "$dir/$2"
+		notify "Slot $2 guardado" "$(preview "$dir/$2")"
 	else
 		rm -f "$tmp"
+		notify "Clipboard vacío" "El slot $2 quedó como estaba"
 		exit 1
 	fi
 	;;
 paste)
 	validate "${2:-}"
-	[ -s "$dir/$2" ] || exit 1
+	[ -s "$dir/$2" ] || {
+		notify "Slot $2 vacío"
+		exit 1
+	}
 	put <"$dir/$2"
 	# xclip tarda un instante en tomar posesión de la selección; sin esto el
 	# paste puede salir con el contenido anterior.
@@ -62,7 +76,7 @@ list)
 	n=1
 	while [ "$n" -le "$slots" ]; do
 		if [ -s "$dir/$n" ]; then
-			printf '%s: %s\n' "$n" "$(tr '\n\t' '  ' <"$dir/$n" | cut -c1-60)"
+			printf '%s: %s\n' "$n" "$(preview "$dir/$n")"
 		else
 			printf '%s: (vacio)\n' "$n"
 		fi
@@ -75,6 +89,7 @@ clear)
 		rm -f "$dir/$n"
 		n=$((n + 1))
 	done
+	notify "Slots vacíos"
 	;;
 *) usage ;;
 esac
