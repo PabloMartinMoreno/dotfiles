@@ -28,5 +28,5 @@ alt + F8
 # limpiar todo: selección actual, historial y slots. Las selecciones van
 # primero para que el borrado del historial se lleve también el registro de
 # haberlas vaciado. Sin los xsel, lo último que copiaste sigue pegable.
-alt + F9
+alt + F12
 	xsel -bc ; xsel -pc ; clipdel -d '.*' ; $HOME/.local/bin/clipslot clear
