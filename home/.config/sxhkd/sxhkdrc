@@ -1,0 +1,30 @@
+# Atajos globales de portapapeles. sxhkd los agarra a nivel X, así que funcionan
+# en cualquier app, no solo en la terminal.
+#
+# Por qué alt+F*: dwm liga Super con todas las letras y los cuatro combos de
+# Super/Ctrl/Shift con cada dígito (macro TAGKEYS), pero no tiene ni un bind con
+# Mod1. Y el XF86Switch_VT_* de las F vive en el nivel de Ctrl+Alt, así que
+# alt+F y alt+shift+F no lo alcanzan.
+#
+# clipslot va con ruta absoluta: ~/.local/bin entra al PATH desde shell/profile,
+# que corre en un login shell — .xprofile no siempre lo hereda.
+
+# guardar el clipboard en el slot 1..6
+alt + F{1-6}
+	$HOME/.local/bin/clipslot copy {1-6}
+
+# cargar el slot 1..6 al clipboard; después pegás con tu tecla de siempre
+alt + shift + F{1-6}
+	$HOME/.local/bin/clipslot paste {1-6}
+
+# historial cronológico completo
+alt + F7
+	clipmenu
+
+# ver los slots y elegir uno para cargar al clipboard
+alt + F8
+	$HOME/.local/bin/clipslot list | dmenu -l 6 -p slots | cut -d: -f1 | xargs -r $HOME/.local/bin/clipslot paste
+
+# limpiar todo: historial y slots
+alt + F12
+	clipdel -d '.' ; $HOME/.local/bin/clipslot clear

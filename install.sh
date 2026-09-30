@@ -23,6 +23,8 @@ RUTAS="
 .config/zathura
 .config/zsh/.p10k.zsh
 .config/zsh/.zshrc
+.config/sxhkd/sxhkdrc
+.local/bin/clipslot
 .local/bin/vault
 .local/bin/wallpaper
 .xprofile

@@ -1,0 +1,67 @@
+#!/bin/sh
+# Slots numerados de portapapeles, independientes del historial de clipmenu.
+# Viven en tmpfs ($XDG_RUNTIME_DIR): se borran solos al reiniciar, no hace
+# falta limpiarlos en el arranque.
+set -eu
+
+dir=${CLIPSLOT_DIR:-${XDG_RUNTIME_DIR:-/tmp}/clipslots}
+slots=6
+
+usage() {
+	echo "uso: clipslot copy N | paste N | list | clear   (N = 1..$slots)" >&2
+	exit 2
+}
+
+# No va en $(...): el exit de usage tiene que matar el script, no un subshell.
+validate() {
+	case ${1:-} in
+	[1-9]) [ "$1" -le "$slots" ] || usage ;;
+	*) usage ;;
+	esac
+}
+
+# xclip -i queda vivo sirviendo la selección; sin redirigir hereda el stdout del
+# llamador y lo deja esperando EOF para siempre.
+put() { xclip -selection clipboard -i >/dev/null 2>&1; }
+
+mkdir -p "$dir"
+chmod 700 "$dir"
+
+case ${1:-} in
+copy)
+	validate "${2:-}"
+	# A un archivo aparte: si el clipboard está vacío no quiero haber borrado
+	# el slot que ya tenía algo.
+	tmp=$(mktemp "$dir/.tmp.XXXXXX")
+	if xclip -selection clipboard -o >"$tmp" 2>/dev/null && [ -s "$tmp" ]; then
+		mv "$tmp" "$dir/$2"
+	else
+		rm -f "$tmp"
+		exit 1
+	fi
+	;;
+paste)
+	validate "${2:-}"
+	[ -s "$dir/$2" ] || exit 1
+	put <"$dir/$2"
+	;;
+list)
+	n=1
+	while [ "$n" -le "$slots" ]; do
+		if [ -s "$dir/$n" ]; then
+			printf '%s: %s\n' "$n" "$(tr '\n\t' '  ' <"$dir/$n" | cut -c1-60)"
+		else
+			printf '%s: (vacio)\n' "$n"
+		fi
+		n=$((n + 1))
+	done
+	;;
+clear)
+	n=1
+	while [ "$n" -le "$slots" ]; do
+		rm -f "$dir/$n"
+		n=$((n + 1))
+	done
+	;;
+*) usage ;;
+esac
