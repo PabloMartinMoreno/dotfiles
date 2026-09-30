@@ -52,6 +52,11 @@ copy)
 	fi
 	if [ -s "$tmp" ]; then
 		mv "$tmp" "$dir/$2"
+		# Lo guardado pasa al clipboard: así clipmenud lo registra en el
+		# historial (que ignora PRIMARY a propósito) y además queda pegable.
+		if [ "$src" = mouse ]; then
+			put <"$dir/$2"
+		fi
 		notify "Slot $2 guardado ($src)" "$(preview "$dir/$2")"
 	else
 		rm -f "$tmp"
